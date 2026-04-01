@@ -1,8 +1,8 @@
-import User from "../models/User";
-import UserPreference from "../models/UserPreference";
+import User from "../models/User.js";
+import UserPreference from "../models/UserPreference.js";
 
 // Get user profile
-export const getProfile = async (req, res) => {
+export const getProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     const preferences = await UserPreference.getByUserId(req.user.id);
@@ -20,7 +20,7 @@ export const getProfile = async (req, res) => {
 };
 
 // Update user profile
-export const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res, next) => {
   try {
     const { name, email } = req.body;
     const user = await User.update(req.user.id, { name, email });
@@ -38,7 +38,7 @@ export const updateProfile = async (req, res) => {
 };
 
 // Update user preferences
-export const updatePreferences = async (req, res) => {
+export const updatePreferences = async (req, res, next) => {
   try {
     const preferences = await UserPreference.upsert(req.user.id, req.body);
 
@@ -55,7 +55,7 @@ export const updatePreferences = async (req, res) => {
 };
 
 // Change user password
-export const changePassword = async (req, res) => {
+export const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
 
@@ -90,7 +90,7 @@ export const changePassword = async (req, res) => {
 };
 
 // Delete user account
-export const deleteAccount = async (req, res) => {
+export const deleteAccount = async (req, res, next) => {
   try {
     await User.delete(req.user.id);
 

@@ -1,5 +1,5 @@
-import User from "../models/User";
-import UserPreference from "../models/UserPreference";
+import User from "../models/User.js";
+import UserPreference from "../models/UserPreference.js";
 import jwt from "jsonwebtoken";
 
 // Generate JWT token
@@ -10,7 +10,7 @@ const generateToken = (user) => {
 };
 
 // Register a new user
-export const register = async (req, res) => {
+export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
     // Validation
@@ -31,7 +31,7 @@ export const register = async (req, res) => {
     }
 
     // Create new user
-    const newUser = await User.create({ name, email, password });
+    const newUser = await User.create(name, email, password);
 
     // Create default user preferences
     await UserPreference.upsert(newUser.id, {
@@ -63,7 +63,7 @@ export const register = async (req, res) => {
 };
 
 // Login user
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     // Validation
@@ -116,7 +116,7 @@ export const login = async (req, res) => {
 };
 
 // Get current user info
-export const getCurrentUser = async (req, res) => {
+export const getCurrentUser = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -135,7 +135,7 @@ export const getCurrentUser = async (req, res) => {
 };
 
 // Request password reset
-export const requestPasswordReset = async (req, res) => {
+export const requestPasswordReset = async (req, res, next) => {
   try {
     const { email } = req.body;
     if (!email) {

@@ -3,11 +3,11 @@ import bcrypt from "bcryptjs";
 
 class User {
   // Create a new user
-  static async create(username, email, password) {
+  static async create(name, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const result = await db.query(
-      "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-      [username, email, hashedPassword],
+      "INSERT INTO users (name, email, password_hash ) VALUES ($1, $2, $3) RETURNING *",
+      [name, email, hashedPassword],
     );
     return result.rows[0];
   }
