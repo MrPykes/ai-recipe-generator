@@ -7,6 +7,10 @@ import cors from "cors";
 import { Pool } from "pg";
 import jwt from "jsonwebtoken";
 
+// Impoert routes
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
+
 const app = express();
 
 // Middleware
@@ -18,6 +22,10 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.json({ message: "Hello, World!" });
 });
+
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 const PORT = process.env.PORT || 8000;
 
